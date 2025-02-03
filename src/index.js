@@ -2,7 +2,6 @@ import express from "express";
 import connection from "./config/database.js";
 import cors from "cors";
 import { logger } from "./middlewares/logger.js";
-import db from "./config/database.js";
 import roomRoute from "./routes/roomRoute.js";
 
 const app = express();
