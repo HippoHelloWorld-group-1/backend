@@ -6,4 +6,5 @@ const roomRoute = express.Router();
 roomRoute.get('/', roomController.getAllRooms)
 
 
+
 export default roomRoute
