@@ -1,34 +1,56 @@
-import * as reservationModel from '../models/reservationModel.js'
+import * as roomModel from '../models/roomModel.js'
 
 
-export const getAllRooms = async (req,res) => {
-    try{
-        const AllRooms = await reservationModel.getAllRooms()
-            // Group rooms by building
-    const groupedData = {};
-    AllRooms.forEach((room) => {
-      const { buildingName, roomName } = room;
-      if (!groupedData[buildingName]) {
-        groupedData[buildingName] = [];
-      }
-      groupedData[buildingName].push(roomName);
-    });
+export const getAllRooms = async (req, res) => {
+    try {
+        const allRooms = await roomModel.getAllRooms();
 
-    // Format the response
-    const formattedData = Object.keys(groupedData).map((building) => ({
-      [building]: groupedData[building],
-    }));
+        // Object to store the formatted data
+        const formattedData = {};
+
+        allRooms.forEach(({ buildingName, roomName }) => {
+            // Extract the major building name (e.g., "CB2 Building", "LX Building")
+            let majorBuilding = buildingName.split(" ")[0].trim(); // Extract main part before "("
+
+            majorBuilding = `${majorBuilding} Building`;
+            // If the major building does not exist, initialize it
+            if (!formattedData[majorBuilding]) {
+                formattedData[majorBuilding] = {};
+            }
+
+            // If the sub-building (full building name) does not exist, initialize it
+            if (!formattedData[majorBuilding][buildingName]) {
+                formattedData[majorBuilding][buildingName] = [];
+            }
+
+            // Push room name into the correct sub-building category
+            formattedData[majorBuilding][buildingName].push(roomName);
+        });
+
         return res.status(200).json({
-            success : true,
-            data: formattedData,
-            message: 'Room retrieved successfully'
-        })
-    } catch(error) {
-        console.log(error);
+            success: true,
+            data: [formattedData], // Wrapping inside an array to match frontend format
+            message: "Rooms retrieved successfully",
+        });
+
+    } catch (error) {
+        console.error("Error fetching rooms:", error);
         return res.status(500).json({
-            success : false,
+            success: false,
             data: null,
-            message: 'Internal Server error'
-        })
+            message: "Internal Server Error",
+        });
     }
-}
+};
+
+
+export const getRoomStatus = async (req, res) => {
+    try {
+      const rooms = await roomModel.getRoomAvailability();
+      res.json({ success: true, data: rooms });
+    } catch (error) {
+      console.error("Error fetching room availability:", error);
+      res.status(500).json({ success: false, error: "Internal Server Error" });
+    }
+  };
+  
