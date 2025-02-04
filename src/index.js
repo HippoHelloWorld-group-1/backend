@@ -36,10 +36,10 @@ setInterval(async () => {
   try {
     const expiredCount = await autoExpirePendingReservations();
     if (expiredCount > 0) {
-      console.log(`⏳ Expired ${expiredCount} pending reservations.`);
+      console.log(`Expired ${expiredCount} pending reservations.`);
     }
   } catch (error) {
-    console.error("❌ Error expiring reservations:", error);
+    console.error("Error expiring reservations:", error);
   }
 }, 600000); // Runs every 10 minutes (600,000ms)
 
