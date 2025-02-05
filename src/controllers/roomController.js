@@ -53,4 +53,20 @@ export const getRoomStatus = async (req, res) => {
       res.status(500).json({ success: false, error: "Internal Server Error" });
     }
   };
+
+export const getRoomStatusDay = async (req,res) => {
+    const { date } = req.query   // data = req.query.data
+
+    if (!date) {
+        return res.status(400).json({ success:false, message:"Date required!"})
+    }
+
+    try {
+        const rooms = await roomModel.getRoomAvailabilityByDay(date);
+        res.json({ success: true, data: rooms})
+    } catch(error) {
+        console.error("Error fetching room availability:", error);
+        res.status(500).json({ success: false, error: "Date data format Wrong" });
+    }
+}
   

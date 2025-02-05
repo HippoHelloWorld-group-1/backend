@@ -6,7 +6,7 @@ const roomRoute = express.Router();
 
 roomRoute.get('/', roomController.getAllRooms)
 roomRoute.get('/status', roomController.getRoomStatus)
-
+roomRoute.get('/statusDay', roomController.getRoomStatusDay)
 
 
 export default roomRoute
