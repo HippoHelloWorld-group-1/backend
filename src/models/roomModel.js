@@ -10,6 +10,15 @@ export const getAllRooms = async (req, res) => {
   return rooms;
 };
 
+export const getRoomName = async (roomId) => {
+  const [rows] = await db.promise().query(`
+    select Room.roomname
+    from Room
+    where id = ?
+    `, [roomId])
+  return rows.length > 0 ? rows[0].roomname : null;
+}
+
 export const getRoomAvailability = async () => {
   const [rooms] = await db.promise().query(`
     SELECT 

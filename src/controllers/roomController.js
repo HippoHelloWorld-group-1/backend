@@ -55,7 +55,7 @@ export const getRoomStatus = async (req, res) => {
   };
 
 export const getRoomStatusDay = async (req,res) => {
-    const { date } = req.query   // data = req.query.data
+    const { date } = req.query   // data = req.query.date
 
     if (!date) {
         return res.status(400).json({ success:false, message:"Date required!"})
