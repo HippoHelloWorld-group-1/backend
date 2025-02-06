@@ -10,6 +10,15 @@ export const getAllRooms = async (req, res) => {
   return rooms;
 };
 
+export const getRoomName = async (roomId) => {
+  const [rows] = await db.promise().query(`
+    select Room.roomname
+    from Room
+    where id = ?
+    `, [roomId])
+  return rows.length > 0 ? rows[0].roomname : null;
+}
+
 export const getRoomAvailability = async () => {
   const [rooms] = await db.promise().query(`
     SELECT 
@@ -29,7 +38,8 @@ export const getRoomAvailability = async () => {
   return rooms; // Return all rooms with their status (available or booked)
 };
 
-export const getRoomAvailabilityByDay = async (selectDate) => {
+//
+export const getAllRoomAvailabilityByDay = async (selectDate) => {
   const [rooms] = await db.promise().query(`
     SELECT
         Room.id AS roomId,
@@ -53,6 +63,32 @@ export const getRoomAvailabilityByDay = async (selectDate) => {
 
   return rooms; // Return all rooms with their status (available or booked)
 };
+
+
+// By day 
+export const getRoomScheduleByDay = async (roomId, selectedDate) => {
+  const [roomSchedule] = await db.promise().query(`
+    SELECT
+        Reservation.id AS reservationId,
+        Reservation.title,
+        Reservation.description,
+        Reservation.status,
+        Reservation.reservationStart,
+        Reservation.reservationEnd,
+        Reservation.createdAt,
+        Reservation.updatedAt,
+        User.firstName AS createdBy
+    FROM Reservation
+    JOIN User ON Reservation.userId = User.id
+    WHERE Reservation.roomId = ?
+      AND DATE(Reservation.reservationStart) = ?
+      AND Reservation.status IN ('pending', 'confirmed')
+    ORDER BY Reservation.reservationStart;
+  `, [roomId, selectedDate]);
+
+  return roomSchedule;
+};
+
 
 export const isRoomAvailable = async (roomId, start, end) => {
   const [existing] = await db.promise().query(

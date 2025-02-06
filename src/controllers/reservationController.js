@@ -24,6 +24,9 @@ export const createReservation = async (req, res) => {
     // Save to the database
     await reservationModel.createReservation(title, description, reservationStart, reservationEnd, roomId, userId, reservationKey);
 
+    // call reservation room to show in mail
+    const roomName = await roomModel.getRoomName(roomId);
+
     // Generate links
     const confirmLink = `http://localhost:3002/reservation/confirm/${reservationKey}`;
     const cancelLink = `http://localhost:3002/reservation/cancel/${reservationKey}`;
@@ -32,11 +35,12 @@ export const createReservation = async (req, res) => {
     // Send email
     const emailContent = `
       <h1>Room Booking Confirmation</h1>
+      <h2>${roomName} at ${reservationStart} till ${reservationEnd} </h2>
       <p>Thank you for booking a room. Please use the following links:</p>
       <ul>
         <li><a href="${confirmLink}">Confirm Booking</a></li>
         <li><a href="${cancelLink}">Cancel Booking</a></li>
-        <li><a href="${editLink}">Edit Booking</a></li>
+        <li><a href="${editLink}">Edit Booking</a> you can edit only in pending time</li>
       </ul>
       <p>Note: The booking will expire in 30 minutes if not confirmed.</p>
     `;
@@ -53,16 +57,43 @@ export const confirmReservation = async (req, res) => {
   const { key } = req.params;
 
   try {
-    const [result] = await reservationModel.updateReservationStatus(key, "confirmed");
-
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ success: false, message: "Invalid or expired reservation key." });
+    const result = await reservationModel.updateReservationStatus(key, "confirmed");
+    //result get object from model 
+    if (!result.success) {
+      // return res.status(404).json({ success: false, message: "Invalid or expired reservation key. or you have cancelled" });
+      return res.send(`
+        <html>
+          <head><title>Reservation Failed</title></head>
+          <body>
+            <h1>Reservation Confirmation Failed</h1>
+            <p>The reservation link is invalid or expired.</p>
+          </body>
+        </html>
+      `);
     }
 
-    res.json({ success: true, message: "Reservation confirmed!" });
+    // res.json({ success: true, message: "Reservation confirmed!" });
+    return res.send(`
+      <html>
+        <head><title>Reservation confirmed</title></head>
+        <body>
+          <h1>Reservation Confirmation Successfully</h1>
+          <p>Thank you for confirming your reservation. Your room is now booked.</p>
+        </body>
+      </html>
+    `);
   } catch (error) {
     console.error("Error confirming reservation:", error);
-    res.status(500).json({ success: false, error: "Internal Server Error" });
+    // res.status(500).json({ success: false, error: "Internal Server Error" });
+    return res.send(`
+      <html>
+        <head><title>${error}</title></head>
+        <body>
+          <h1>Reservation Confirmation error</h1>
+          <p>Internal Server Error</p>
+        </body>
+      </html>
+    `);
   }
 };
 
@@ -70,9 +101,9 @@ export const cancelReservation = async (req, res) => {
   const { key } = req.params;
 
   try {
-    const [result] = await reservationModel.updateReservationStatus(key, "cancelled");
+    const result = await reservationModel.updateReservationStatus(key, "cancelled");
 
-    if (result.affectedRows === 0) {
+    if (!result.success) {
       return res.status(404).json({ success: false, message: "Invalid reservation key." });
     }
 
@@ -82,3 +113,22 @@ export const cancelReservation = async (req, res) => {
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
+
+export const editReservation = async (req,res) => {
+  const { key } = req.params
+  const { title , description} = req.body
+
+  try {
+    const result = await reservationModel.editReservation(key, title, description);
+
+    if (!result.success){
+      return res.status(400).json(result);
+    }
+
+    res.json(result);
+  } catch (error) {
+    console.error("Error editing reservation:", error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+}
+
