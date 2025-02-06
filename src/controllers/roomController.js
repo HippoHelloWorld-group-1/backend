@@ -62,7 +62,7 @@ export const getRoomStatusDay = async (req,res) => {
     }
 
     try {
-        const rooms = await roomModel.getRoomAvailabilityByDay(date);
+        const rooms = await roomModel.getAllRoomAvailabilityByDay(date);
         res.json({ success: true, data: rooms})
     } catch(error) {
         console.error("Error fetching room availability:", error);
@@ -70,3 +70,18 @@ export const getRoomStatusDay = async (req,res) => {
     }
 }
   
+export const getRoomSchedule = async (req,res) => {
+    const { roomId, date } = req.query;
+  
+    if(!roomId || !date){
+      return res.status(400).json({ success: false, message: "Room ID and Date are require!"})
+    }
+  
+    try {
+      const roomSchedule = await roomModel.getRoomScheduleByDay(roomId,date)
+      res.json({ success: true, data: roomSchedule });
+
+    } catch(error){
+        res.status(500).json({ success: false, error: "Internal Server Error"})
+    }
+  }
