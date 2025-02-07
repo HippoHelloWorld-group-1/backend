@@ -9,6 +9,8 @@ export const getOrCreateUserIdByEmail = async (firstName,lastName,email) => {
   if (rows.length > 0) {
     return rows[0].id; // Return existing user ID
   }
+
+  
  
   // If user doesn't exist, insert them
   const insertQuery = "INSERT INTO User (firstName,lastName,email,createdAt, updatedAt) VALUES (?,?,?,NOW(), NOW())";   

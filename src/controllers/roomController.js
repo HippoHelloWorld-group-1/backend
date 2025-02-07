@@ -5,31 +5,28 @@ export const getAllRooms = async (req, res) => {
     try {
         const allRooms = await roomModel.getAllRooms();
 
-        // Object to store the formatted data
         const formattedData = {};
 
-        allRooms.forEach(({ buildingName, roomName }) => {
-            // Extract the major building name (e.g., "CB2 Building", "LX Building")
-            let majorBuilding = buildingName.split(" ")[0].trim(); // Extract main part before "("
+        allRooms.forEach(({ buildingName, roomId, roomName }) => {
+            let majorBuilding = buildingName.split(" ")[0].trim() + " Building";
 
-            majorBuilding = `${majorBuilding} Building`;
-            // If the major building does not exist, initialize it
             if (!formattedData[majorBuilding]) {
                 formattedData[majorBuilding] = {};
             }
 
-            // If the sub-building (full building name) does not exist, initialize it
             if (!formattedData[majorBuilding][buildingName]) {
-                formattedData[majorBuilding][buildingName] = [];
+                formattedData[majorBuilding][buildingName] = {};
             }
 
-            // Push room name into the correct sub-building category
-            formattedData[majorBuilding][buildingName].push(roomName);
+            formattedData[majorBuilding][buildingName][roomName] = { 
+                id: roomId, 
+                name: roomName 
+            };
         });
 
         return res.status(200).json({
             success: true,
-            data: [formattedData], // Wrapping inside an array to match frontend format
+            data: formattedData,
             message: "Rooms retrieved successfully",
         });
 
@@ -42,6 +39,17 @@ export const getAllRooms = async (req, res) => {
         });
     }
 };
+
+export const getBuildingsWithRooms = async (req, res) => {
+    try {
+      const buildings = await roomModel.getAllBuildingsWithRooms();
+      res.json({ success: true, data: buildings });
+    } catch (error) {
+      console.error("Error fetching buildings and rooms:", error);
+      res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+  };
+  
 
 
 export const getRoomStatus = async (req, res) => {
