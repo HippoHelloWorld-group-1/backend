@@ -2,12 +2,19 @@ import * as reservationModel from '../models/reservationModel.js'
 import * as roomModel from '../models/roomModel.js'
 import crypto from 'crypto';
 import sendEmail from '../config/mailer.js'
+import dotenv from "dotenv";
+dotenv.config();
 
 
 export const createReservation = async (req, res) => {
   const { title, description, reservationStart, reservationEnd, firstName, lastName, email, roomId } = req.body;
 
   try {
+
+    const allowedDomain = process.config.EMAILFORMAT; // domain mail
+    if (!email.endsWith(allowedDomain)) {
+      return res.status(400).json({ success: false, error: "Only student emails are allowed." });
+    }
 
     const isAvailable = await roomModel.isRoomAvailable(roomId, reservationStart,reservationEnd)
     if (!isAvailable) {

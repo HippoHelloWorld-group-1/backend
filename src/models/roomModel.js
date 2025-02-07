@@ -2,13 +2,38 @@ import db from "../config/database.js";
 
 export const getAllRooms = async (req, res) => {
   // Query to fetch rooms with their building information
-  const [rooms] = await db.promise().query(`
-      SELECT Building.buildingName, Room.roomName 
-      FROM Room 
-      JOIN Building ON Room.buildingId = Building.id
-    `);
-  return rooms;
+  const [allRooms] = await db.promise().query(`
+    SELECT 
+        Building.id AS buildingId,
+        Building.buildingName, 
+        Room.id AS roomId, 
+        Room.roomName
+    FROM Room
+    JOIN Building ON Room.buildingId = Building.id
+`);
+ return allRooms
 };
+
+export const getAllBuildingsWithRooms = async () => {
+  const [rooms] = await db.promise().query(`
+    SELECT Room.id AS roomId, Room.roomName, Building.buildingName
+    FROM Room
+    JOIN Building ON Room.buildingId = Building.id
+    ORDER BY Building.buildingName, Room.roomName;
+  `);
+
+  // Group rooms by building
+  const buildings = {};
+  rooms.forEach((room) => {
+    if (!buildings[room.buildingName]) {
+      buildings[room.buildingName] = [];
+    }
+    buildings[room.buildingName].push({ id: room.roomId, name: room.roomName });
+  });
+
+  return buildings;
+};
+
 
 export const getRoomName = async (roomId) => {
   const [rows] = await db.promise().query(`
