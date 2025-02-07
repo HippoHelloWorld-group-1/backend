@@ -69,4 +69,5 @@ export const getRoomStatusDay = async (req,res) => {
         res.status(500).json({ success: false, error: "Date data format Wrong" });
     }
 }
+
   
