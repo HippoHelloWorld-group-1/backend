@@ -23,10 +23,10 @@ const sendEmail = async (to, subject, htmlContent, retries = 3) => {
     
           await transporter.sendMail(mailOptions);
           console.log(`Email sent to ${to}`);
-          return; // Exit if successful
+          return; 
         } catch (error) {
           console.error(`Email send attempt ${attempt} failed:`, error);
-          if (attempt === retries) throw error; // Only throw if all retries fail
+          if (attempt === retries) throw error; 
         }
       }
 };
