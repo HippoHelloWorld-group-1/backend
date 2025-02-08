@@ -47,9 +47,9 @@ export const createReservation = async (req, res) => {
     const roomName = await roomModel.getRoomName(roomId);
 
     //  Generate confirmation links
-    const confirmLink = `http://localhost:3002/reservation/confirm/${reservationKey}`;
-    const cancelLink = `http://localhost:3002/reservation/cancel/${reservationKey}`;
-    const editLink = `http://localhost:3002/reservation/edit/${reservationKey}`;
+    const confirmLink = `http://helloworld01.sit.kmutt.ac.th:3002/reservation/confirm/${reservationKey}`;
+    const cancelLink = `http://helloworld01.sit.kmutt.ac.th:3002/reservation/cancel/${reservationKey}`;
+    const editLink = `http://helloworld01.sit.kmutt.ac.th:3002/reservation/edit/${reservationKey}`;
 
     //  Format selected times for email
     const formattedTimes = timeSlots.map(({ start, end }) => `<li>${start} - ${end}</li>`).join("");
@@ -238,7 +238,7 @@ export const confirmReservation = async (req, res) => {
                       </div>
                   </div>
                   <div class="footer-box">
-                      <a href=${website} target="_blank"><button>Go to website</button></a>
+                      <a href=${process.env.website} target="_blank"><button>Go to website</button></a>
                   </div>
               </div>
           </div>
@@ -337,7 +337,7 @@ export const cancelReservation = async (req, res) => {
           </div>
           <script>
               function deleteReservation() {
-                fetch("http://localhost:3002/reservation/cancel/${key}", { method: "DELETE" })
+                fetch("http://helloworld01.sit.kmutt.ac.th:3002/reservation/cancel/${key}", { method: "DELETE" })
                   .then(response => response.json()) 
                   .then(data => {   // data is response.json
                     if (data.success) {
@@ -618,7 +618,7 @@ export const getEditPage = async (req, res) => {
                   const title = document.getElementById("title").value;
                   const description = document.getElementById("description").value;
 
-                  fetch("http://localhost:3002/reservation/edit/${key}", { 
+                  fetch("http://helloworld01.sit.kmutt.ac.th:3002/reservation/edit/${key}", { 
                       method: "PUT",
                       headers: { "Content-Type": "application/json" },
                       body: JSON.stringify({ title, description }) 
