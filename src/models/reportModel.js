@@ -1,11 +1,11 @@
 import db from "../config/database.js"
 
 
-export const createReport = async (detail, userEmail, roomId, buildingId, reportStartAt, reportEndAt) => {
+export const createReport = async (detail, userEmail, roomId, buildingId, problemStartAt, problemEndAt) => {
     const [result] = await db.promise().query(
-      `INSERT INTO Report (detail, userEmail, roomId, buildingId, report_start_at, report_end_at)
+      `INSERT INTO Report (detail, userEmail, roomId, buildingId, problem_start_at, problem_end_at)
        VALUES (?, ?, ?, ?, ?, ?)`,
-      [detail, userEmail, roomId, buildingId, reportStartAt, reportEndAt]
+      [detail, userEmail, roomId, buildingId, problemStartAt, problemEndAt]
     );
   
     return { success: result.affectedRows > 0, message: "Report created successfully." };
