@@ -1,9 +1,9 @@
 import dotenv from 'dotenv'
 dotenv.config()
 
-export const invalidKey = `
+export const invalidKey = (text) => ( `
     <head>
-        <title>Invalid or expired reservation key</title>
+        <title>${text}</title>
         <style>
             * {
                 margin: 0;
@@ -38,7 +38,7 @@ export const invalidKey = `
             }
             .small-text{
                 margin-top: 40px;
-                color: #470000;
+                color: red;
                 font-weight: bold;
             }
             .footer-box{
@@ -67,7 +67,7 @@ export const invalidKey = `
                     <h1>Reservation</h1>
                     <div class="small-text">
                         <p>Invalid Reservation Key</p><br>
-                        <p>This reservation key is not valid or has already been confirmed.</p>
+                        <p>${text}</p>
                     </div>
                 </div>
                 <div class="footer-box">
@@ -77,4 +77,4 @@ export const invalidKey = `
         </div>
     </body>
     </html>
-      `
+      `)
