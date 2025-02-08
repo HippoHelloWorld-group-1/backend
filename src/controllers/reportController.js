@@ -2,10 +2,10 @@ import * as reportModel from "../models/reportModel.js";
 import { isValidEmail } from "../utils/emailValidator.js";
 
 export const createReport = async (req, res) => {
-  const { detail, userEmail, roomId, buildingId, reportStartAt, reportEndAt } = req.body;
+  const { detail, userEmail, roomId, buildingId, problemStartAt, problemEndAt } = req.body;
 
   // check all field
-  if (!detail || !userEmail || !roomId || !buildingId || !reportStartAt || !reportEndAt) {
+  if (!detail || !userEmail || !roomId || !buildingId || !problemStartAt || !problemEndAt) {
     return res.status(400).json({ success: false, message: "Missing required fields." });
   }
 
@@ -14,7 +14,7 @@ export const createReport = async (req, res) => {
     }
 
   try {
-    const result = await reportModel.createReport(detail, userEmail, roomId, buildingId, reportStartAt, reportEndAt);
+    const result = await reportModel.createReport(detail, userEmail, roomId, buildingId, problemStartAt, problemEndAt);
 
     if (!result.success) {
       return res.status(500).json({ success: false, message: "Failed to create report." });
