@@ -4,15 +4,16 @@ import crypto from "crypto";
 import sendEmail from "../config/mailer.js";
 import dotenv from "dotenv";
 import * as htmlError from "../utils/htmlError.js";
+import { isValidEmail } from "../utils/emailValidator.js";
 dotenv.config();
 
 export const createReservation = async (req, res) => {
   const { title, description, times, firstName, lastName, email, roomId } = req.body;
 
   try {
-    const allowedDomain = process.env.MAILFORMAT; // check email format
-    if (!email.endsWith(allowedDomain)) {
-      return res.status(400).json({ success: false, error: "Only student emails are allowed." });
+    
+    if (!isValidEmail(email)) {
+      return res.status(400).json({ success: false, error: "Only student and teacher emails are allowed." });
     }
 
     if (!times || times.length === 0) { 
