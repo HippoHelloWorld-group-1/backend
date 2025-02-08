@@ -12,6 +12,7 @@ import cron from "node-cron";
 const app = express();
 const PORT = process.env.PORT;
 
+app.use(express.static('public'));
 app.use(logger);
 app.use(cors());
 app.use(bodyParser.json());

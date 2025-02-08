@@ -56,7 +56,7 @@ export const createReservation = async (req, res) => {
 
     //  Send email with new format
     const emailContent = `
-      <img alt="logo-sit" src="https://res.cloudinary.com/dy8gz1xet/image/upload/f_auto,q_auto/v1739026034/Group_36_bi9nij.webp">
+      <img alt="logo-sit" src="/Group-36.webp">
       <h1>Room Booking Confirmation SIT</h1> 
       <h2>${roomName}</h2>
       <p>Selected Times:</p>
@@ -102,7 +102,7 @@ export const confirmReservation = async (req, res) => {
                   font-family: Arial, Helvetica, sans-serif;
               }
               body{
-                  background-image: url(https://cdn.discordapp.com/attachments/1327890645922091059/1337424714213101598/SIT_1.webp?ex=67a76554&is=67a613d4&hm=823d275d5d40a81439766a983d9f1b18b85ecff14429a75be0cd170d4dfc6125&;);
+                  background-image: url(/SIT-1.webp);
                   background-repeat: none;
                   background-position: center;
                   background-attachment: fixed;
@@ -148,7 +148,7 @@ export const confirmReservation = async (req, res) => {
           <div class="cover">
               <div class="box">
                   <div class="top-box">
-                      <img alt="logo-sit" src="https://cdn.discordapp.com/attachments/1327890645922091059/1337424714599108723/Group_36.webp?ex=67a76554&is=67a613d4&hm=61d40abca3722757f3c2c345e89bc2c8e0f917c7929fa672cd61d92c290a1633&">
+                      <img alt="logo-sit" src="/Group-36.webp">
                   </div>
                   <div class="text">
                       <h1>Reservation</h1>
@@ -179,7 +179,7 @@ export const confirmReservation = async (req, res) => {
                   font-family: Arial, Helvetica, sans-serif;
               }
               body{
-                  background-image: url(https://cdn.discordapp.com/attachments/1327890645922091059/1337424714213101598/SIT_1.webp?ex=67a76554&is=67a613d4&hm=823d275d5d40a81439766a983d9f1b18b85ecff14429a75be0cd170d4dfc6125&;);
+                  background-image: url(/SIT-1.webp);
                   background-repeat: none;
                   background-position: center;
                   background-attachment: fixed;
@@ -228,7 +228,7 @@ export const confirmReservation = async (req, res) => {
           <div class="cover">
               <div class="box">
                   <div class="top-box">
-                      <img alt="logo-sit" src="https://cdn.discordapp.com/attachments/1327890645922091059/1337424714599108723/Group_36.webp?ex=67a76554&is=67a613d4&hm=61d40abca3722757f3c2c345e89bc2c8e0f917c7929fa672cd61d92c290a1633&">
+                      <img alt="logo-sit" src="/Group-36.webp">
                   </div>
                   <div class="text">
                       <h1>Reservation</h1>
@@ -272,7 +272,7 @@ export const cancelReservation = async (req, res) => {
                   font-family: Arial, Helvetica, sans-serif;
               }
               body{
-                  background-image: url(https://cdn.discordapp.com/attachments/1327890645922091059/1337424714213101598/SIT_1.webp?ex=67a76554&is=67a613d4&hm=823d275d5d40a81439766a983d9f1b18b85ecff14429a75be0cd170d4dfc6125&;);
+                  background-image: url(/SIT-1.webp);
                   background-repeat: none;
                   background-position: center;
                   background-attachment: fixed;
@@ -321,7 +321,7 @@ export const cancelReservation = async (req, res) => {
           <div class="cover">
               <div class="box">
                   <div class="top-box">
-                      <img alt="logo-sit" src="https://cdn.discordapp.com/attachments/1327890645922091059/1337424714599108723/Group_36.webp?ex=67a76554&is=67a613d4&hm=61d40abca3722757f3c2c345e89bc2c8e0f917c7929fa672cd61d92c290a1633&">
+                      <img alt="logo-sit" src="/Group-36.webp">
                   </div>
                   <div class="text">
                       <h1>Your reservation has been cancelled.</h1>
@@ -422,7 +422,7 @@ export const getEditPage = async (req, res) => {
                     font-family: Arial, Helvetica, sans-serif;
                 }
                 body{
-                    background-image: url(https://cdn.discordapp.com/attachments/1327890645922091059/1337424714213101598/SIT_1.webp?ex=67a76554&is=67a613d4&hm=823d275d5d40a81439766a983d9f1b18b85ecff14429a75be0cd170d4dfc6125&;);
+                    background-image: url(/SIT-1.webp);
                     background-repeat: none;
                     background-position: center;
                     background-attachment: fixed;
@@ -471,7 +471,7 @@ export const getEditPage = async (req, res) => {
             <div class="cover">
                 <div class="box">
                     <div class="top-box">
-                        <img alt="logo-sit" src="https://cdn.discordapp.com/attachments/1327890645922091059/1337424714599108723/Group_36.webp?ex=67a76554&is=67a613d4&hm=61d40abca3722757f3c2c345e89bc2c8e0f917c7929fa672cd61d92c290a1633&">
+                        <img alt="logo-sit" src="/Group-36.webp">
                     </div>
                     <div class="text">
                         <h1>This reservation cannot be changed.</h1>
@@ -501,7 +501,7 @@ export const getEditPage = async (req, res) => {
                   font-family: Arial, Helvetica, sans-serif;
               }
               body {
-                  background-image: url(https://cdn.discordapp.com/attachments/1327890645922091059/1337424714213101598/SIT_1.webp?ex=67a76554&is=67a613d4&hm=823d275d5d40a81439766a983d9f1b18b85ecff14429a75be0cd170d4dfc6125&);
+                  background-image: url(/SIT-1.webp);
                   background-repeat: no-repeat;
                   background-position: center;
                   background-attachment: fixed;
@@ -588,7 +588,7 @@ export const getEditPage = async (req, res) => {
       <body>
 
           <div class="container">
-              <img src="https://cdn.discordapp.com/attachments/1327890645922091059/1337424714599108723/Group_36.webp?ex=67a76554&is=67a613d4&hm=61d40abca3722757f3c2c345e89bc2c8e0f917c7929fa672cd61d92c290a1633&" alt="logo-sit">
+              <img src="/Group-36.webp" alt="logo-sit">
               <h1 id="main-text">Edit Your Reservation</h1>
               
               <form id="edit-form">
