@@ -21,8 +21,8 @@ const sendEmail = async (to, subject, htmlContent, retries = 3) => {
             html: htmlContent,
             attachments: [
               {
-                filename: 'logo.webp',
-                path: 'https://res.cloudinary.com/dy8gz1xet/image/upload/v1739026034/Group_36_bi9nij.webp',
+                filename: 'Group_36_bi9nij.png',
+                path: '/Group_36_bi9nij.png',
                 cid: 'logoimage' // Attach image inline
               }
             ]
