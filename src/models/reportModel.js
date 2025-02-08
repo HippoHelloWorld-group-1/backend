@@ -22,10 +22,29 @@ export const createReport = async (detail, userEmail, roomId, buildingId, proble
     return { success: result.affectedRows > 0, message: "Report created successfully." };
   };
 
+// export const getAllReports = async () => {
+//     const [rows] = await db.promise().query(`SELECT * FROM Report ORDER BY problem_start_at DESC`);
+//     return rows;
+// };
+
 export const getAllReports = async () => {
-    const [rows] = await db.promise().query(`SELECT * FROM Report ORDER BY problem_start_at DESC`);
+    const [rows] = await db.promise().query(`
+        SELECT 
+            Report.id,
+            Report.detail,
+            Report.problem_start_at,
+            Report.problem_end_at,
+            Report.userEmail,
+            Room.roomName,
+            Building.buildingName
+        FROM Report
+        LEFT JOIN Room ON Report.roomId = Room.id
+        JOIN Building ON Report.buildingId = Building.id
+        ORDER BY Report.problem_start_at DESC
+    `);
     return rows;
 };
+
   
 
   
