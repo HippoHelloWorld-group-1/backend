@@ -14,7 +14,7 @@ export const createReport = async (detail, userEmail, roomId, buildingId, proble
   
 
 export const getAllReports = async () => {
-    const [rows] = await db.promise().query(`SELECT * FROM Report ORDER BY report_start_at DESC`);
+    const [rows] = await db.promise().query(`SELECT * FROM Report ORDER BY problem_start_at DESC`);
     return rows;
   };
 

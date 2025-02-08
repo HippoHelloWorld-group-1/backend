@@ -89,11 +89,11 @@ export const updateReservationStatus = async (key, status) => {
 
   const currentState = existing[0].status
 
-  if((currentState === 'confirmed' && status != 'cancelled')) {
-    return {success: false,message:"This reservation cannot be changed. only cancel"}
+  if (currentState === "expired") {
+    return { success: false, message: "This reservation cannot be changed." };
   }
-  if(currentState === 'expired' || currentState === 'cancelled'){
-    return {success: false,message:"This reservation cannot be changed."}
+  if (currentState === "confirmed" && status !== "cancelled") {
+    return { success: false, message: "This reservation cannot be changed. Only cancellation is allowed." };
   }
   
 
