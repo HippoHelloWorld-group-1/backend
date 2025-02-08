@@ -80,30 +80,38 @@ export const createMultipleReservations = async (title, description, times, room
 // Update reservation status
 export const updateReservationStatus = async (key, status) => {
   const [existing] = await db.promise().query(`
-    SELECT Reservation.status from Reservation where reservationKey = ?
-    `, [key]) // find first if have this user id in db reservation
+    SELECT status FROM Reservation WHERE reservationKey = ?
+  `, [key]);
 
-  if (existing.length === 0){
-    return {success: false,message: 'Invalid reservation key'}
+  if (existing.length === 0) {
+    return { success: false, message: "Invalid reservation key" };
   }
 
-  const currentState = existing[0].status
+  const currentState = existing[0].status;
 
   if (currentState === "expired") {
     return { success: false, message: "This reservation cannot be changed." };
   }
-  if (currentState === "confirmed" && status !== "cancelled") {
-    return { success: false, message: "This reservation cannot be changed. Only cancellation is allowed." };
+
+  if (currentState === "cancelled" && status === "cancelled") {
+    return { success: true, message: "Reservation is already cancelled." };
   }
-  
 
-  // If status is pending 
-  const [result] =  await db.promise().query(`
+  if (currentState === "cancelled" && status === "confirmed") {
+    return { success: false, message: "Cancelled reservations cannot be confirmed." };
+  }
+
+  if (status === "confirmed" && currentState !== "pending") {
+    return { success: false, message: "Only pending reservations can be confirmed." };
+  }
+
+  const [result] = await db.promise().query(`
     UPDATE Reservation SET status = ?, updatedAt = NOW() WHERE reservationKey = ?
-  `,[status, key])
+  `, [status, key]);
 
-  return { success : result.affectedRows > 0, message: "Reservation status update succesfully."} // affectedRows mean the row that have affected like this query has update 1 rows
+  return { success: result.affectedRows > 0, message: "Reservation status updated successfully." };
 };
+
 
 export const deleteReservation = async (key) => {
   // Check if reservation exists

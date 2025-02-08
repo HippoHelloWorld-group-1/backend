@@ -56,7 +56,7 @@ export const createReservation = async (req, res) => {
 
     //  Send email with new format
     const emailContent = `
-      <h1>Room Booking Confirmation SIT</h1> <img alt="logo-sit" src="">
+      <h1>Room Booking Confirmation SIT</h1> <img alt="logo-sit" src="https://www.figma.com/design/N8GOT6QQgYidESV6gcZcwn/Project-Hello-world?node-id=97-1643&t=pt0j7kzX0tEt9ttg-4">
       <h2>${roomName}</h2>
       <p>Selected Times:</p>
       <ul>${formattedTimes}</ul>
@@ -87,8 +87,7 @@ export const confirmReservation = async (req, res) => {
     );
     //result get object from model
     if (!result.success) {
-      // return res.status(404).json({ success: false, message: "Invalid or expired reservation key. or you have cancelled" });
-    return res.send(htmlError.invalidKey);
+      return res.status(400).send(htmlError.invalidKey(result.message))
     }
     // res.json({ success: true, message: "Reservation confirmed!" });
     return res.send(`
@@ -256,7 +255,7 @@ export const cancelReservation = async (req, res) => {
     const result = await reservationModel.updateReservationStatus(key, "cancelled");
 
     if (!result.success) {
-      return res.send(htmlError.invalidKey)
+      return res.status(400).send(htmlError.invalidKey(result.message))
     }
 
     // Return an HTML page for user confirmation
@@ -405,7 +404,7 @@ export const getEditPage = async (req, res) => {
     const existing = await roomModel.getDescription(key); 
 
     if (!existing) { 
-      return res.send(htmlError.invalidKey);
+      return res.send(htmlError.invalidKey("There is no data"));
     }
 
     const { title, description, status } = existing; 
@@ -668,7 +667,7 @@ export const editReservation = async (req, res) => {
     );
 
     if (!result.success) {
-      return res.status(400).json(result);
+        return res.send(htmlError.invalidKey(result.message))
     }
 
     res.json(result);
