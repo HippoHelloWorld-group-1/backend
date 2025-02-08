@@ -17,7 +17,7 @@ export const createReport = async (req, res) => {
     const result = await reportModel.createReport(detail, userEmail, roomId || null, buildingId, problemStartAt, problemEndAt);
 
     if (!result.success) {
-      return res.status(500).json({ success: false, message: "Failed to create report." });
+      return res.status(500).json({ success: false, message: result.message });
     }
 
     res.json({ success: true, message: "Report submitted successfully!" });
