@@ -56,7 +56,8 @@ export const createReservation = async (req, res) => {
 
     //  Send email with new format
     const emailContent = `
-      <h1>Room Booking Confirmation</h1>
+      <img alt="logo-sit" src="https://cdn.discordapp.com/attachments/1327890645922091059/1337424714599108723/Group_36.webp?ex=67a80e14&is=67a6bc94&hm=d153680b54fddafcf96153660ac7761f87b2756f7eedffa49fc85bf1c0657d65&">
+      <h1>Room Booking Confirmation SIT</h1>
       <h2>${roomName}</h2>
       <p>Selected Times:</p>
       <ul>${formattedTimes}</ul>
