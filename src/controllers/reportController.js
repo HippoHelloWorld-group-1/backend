@@ -1,23 +1,38 @@
-import * as reportModel from '../models/reportModel.js'; 
+import * as reportModel from "../models/reportModel.js";
+import { isValidEmail } from "../utils/emailValidator.js";
 
+export const createReport = async (req, res) => {
+  const { detail, userEmail, roomId, buildingId, reportStartAt, reportEndAt } = req.body;
 
-export const addReport = (req, res) => {
-    const { report_date, area, room, text } = req.body;
+  // check all field
+  if (!detail || !userEmail || !roomId || !buildingId || !reportStartAt || !reportEndAt) {
+    return res.status(400).json({ success: false, message: "Missing required fields." });
+  }
 
-    if (!report_date || !area || !room || !text) {
-        return res.status(400).json({ error: 'Please fill in complete information.' });
+    if (!isValidEmail(userEmail)) {
+      return res.status(400).json({ success: false, error: "Only student and teacher emails are allowed." });
     }
 
-    reportModel.addReport(report_date, area, room, text, (err, id) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json({ message: 'Saved successfully', id });
-    });
+  try {
+    const result = await reportModel.createReport(detail, userEmail, roomId, buildingId, reportStartAt, reportEndAt);
+
+    if (!result.success) {
+      return res.status(500).json({ success: false, message: "Failed to create report." });
+    }
+
+    res.json({ success: true, message: "Report submitted successfully!" });
+  } catch (error) {
+    console.error("Error creating report:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
 };
 
-
-export const getAllReports = (req, res) => {
-    reportModel.getAllReports((err, rows) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(rows);
-    });
+export const getAllReports = async (req, res) => {
+    try {
+      const reports = await reportModel.getAllReports();
+      res.json({ success: true, data: reports });
+    } catch (error) {
+      console.error("Error fetching reports:", error);
+      res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
 };
