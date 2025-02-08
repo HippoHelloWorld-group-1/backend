@@ -11,6 +11,7 @@ export const createReport = async (detail, userEmail, roomId, buildingId, proble
     return { success: result.affectedRows > 0, message: "Report created successfully." };
   };
   
+  
 
 export const getAllReports = async () => {
     const [rows] = await db.promise().query(`SELECT * FROM Report ORDER BY report_start_at DESC`);
