@@ -56,7 +56,8 @@ export const createReservation = async (req, res) => {
 
     //  Send email with new format
     const emailContent = `
-      <h1>Room Booking Confirmation SIT</h1> <img alt="logo-sit" src="https://www.figma.com/design/N8GOT6QQgYidESV6gcZcwn/Project-Hello-world?node-id=97-1643&t=pt0j7kzX0tEt9ttg-4">
+      <img alt="logo-sit" src="https://res.cloudinary.com/dy8gz1xet/image/upload/f_auto,q_auto/v1739026034/Group_36_bi9nij.webp">
+      <h1>Room Booking Confirmation SIT</h1> 
       <h2>${roomName}</h2>
       <p>Selected Times:</p>
       <ul>${formattedTimes}</ul>
