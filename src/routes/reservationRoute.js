@@ -5,7 +5,10 @@ const reservationRoute = express.Router();
 
 reservationRoute.post("/create", reservationController.createReservation);
 reservationRoute.get("/confirm/:key", reservationController.confirmReservation);
+reservationRoute.get("/edit/:key", reservationController.getEditPage);
+reservationRoute.put("/edit/:key", reservationController.editReservation);
 reservationRoute.get("/cancel/:key", reservationController.cancelReservation);
-reservationRoute.put("/edit/:key", reservationController.editReservation)
+reservationRoute.delete("/cancel/:key", reservationController.deleteReservation);
+
 
 export default reservationRoute;

@@ -6,6 +6,7 @@ import { logger } from "./middlewares/logger.js";
 import roomRoute from "./routes/roomRoute.js";
 import reservationRoute from "./routes/reservationRoute.js"
 import { autoExpirePendingReservations } from "./models/reservationModel.js";
+import reportRoute from "./routes/reportRoute.js";
 
 const app = express();
 const PORT = process.env.PORT;
@@ -20,8 +21,10 @@ app.get("/", (req, res) => {
 });
 
 
+
 app.use('/api/rooms', roomRoute)
 app.use("/reservation", reservationRoute);
+app.use("/report", reportRoute);
 
 connection.connect((err) => {
   if (err) {

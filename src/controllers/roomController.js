@@ -87,7 +87,7 @@ export const getRoomSchedule = async (req,res) => {
   
     try {
       const roomSchedule = await roomModel.getRoomScheduleByDay(roomId,date)
-      res.json({ success: true, data: roomSchedule });
+      res.json({ success: true, data: roomSchedule })
 
     } catch(error){
         res.status(500).json({ success: false, error: "Internal Server Error"})

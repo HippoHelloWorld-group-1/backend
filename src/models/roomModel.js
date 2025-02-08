@@ -35,6 +35,17 @@ export const getAllBuildingsWithRooms = async () => {
 };
 
 
+export const getDescription = async (key) => {
+  const [existing] = await db.promise().query(
+    `SELECT title, description, status FROM Reservation WHERE reservationKey = ?`,
+    [key]
+  );
+
+  return existing.length > 0 ? existing[0] : null; // ✅ Return first row OR null
+};
+
+
+
 export const getRoomName = async (roomId) => {
   const [rows] = await db.promise().query(`
     select Room.roomname

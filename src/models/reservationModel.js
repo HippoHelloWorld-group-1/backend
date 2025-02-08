@@ -1,7 +1,8 @@
 import db from "../config/database.js";
 
 
-export const getOrCreateUserIdByEmail = async (firstName,lastName,email) => {
+
+export const getOrCreateUserIdByEmail = async (firstName, lastName, email) => {
   // Check if the user exists
   const checkQuery = "SELECT id FROM User WHERE email = ?";
   const [rows] = await db.promise().query(checkQuery, [email]);
@@ -10,14 +11,24 @@ export const getOrCreateUserIdByEmail = async (firstName,lastName,email) => {
     return rows[0].id; // Return existing user ID
   }
 
-  
- 
+  let role = "Unknown"; // Default role
+
+  const allowedDomain = process.env.MAILFORMAT;  // Student/Staff domain
+  const teacherMail = process.env.TEACHERMAIL;  // Teacher domain
+
+  if (email.endsWith(allowedDomain)) {
+    role = "Student/Staff";
+  } else if (email.endsWith(teacherMail)) {
+    role = "Teacher";
+  }
+
   // If user doesn't exist, insert them
-  const insertQuery = "INSERT INTO User (firstName,lastName,email,createdAt, updatedAt) VALUES (?,?,?,NOW(), NOW())";   
-  const [result] = await db.promise().query(insertQuery, [firstName,lastName,email]);
+  const insertQuery = "INSERT INTO User (firstName, lastName, email, createdAt, updatedAt, role) VALUES (?, ?, ?, NOW(), NOW(), ?)";   
+  const [result] = await db.promise().query(insertQuery, [firstName, lastName, email, role]);
 
   return result.insertId; // Return newly created user ID
 };
+
 
 
 
@@ -29,6 +40,41 @@ export const createReservation = async (title, description, reservationStart, re
     VALUES (?,?,?,?,?, ?, 'pending', ?, NOW(), NOW())`,
     [title, description, reservationStart, reservationEnd,roomId, userId, key]
   )
+};
+
+export const createMultipleReservations = async (title, description, times, roomId, userId, key) => {
+  if (!times || times.length === 0) {
+    return { success: false, message: "No valid time slots selected." };
+  }
+
+  // Extract all start/end times from the new format
+  const timeSlots = times.flatMap(period =>
+    Object.values(period).map(({ start, end }) => [
+      title,
+      description,
+      start,
+      end,
+      roomId,
+      userId,
+      "pending",  // Status column
+      key,        // Reservation Key
+      new Date(), // createdAt (NOW() in SQL)
+      new Date()  // updatedAt (NOW() in SQL)
+    ])
+  );
+
+  if (timeSlots.length === 0) {
+    return { success: false, message: "No valid time slots selected." };
+  }
+
+  //  Insert into database with the correct number of values
+  const [result] = await db.promise().query(
+    `INSERT INTO Reservation (title, description, reservationStart, reservationEnd, roomId, userId, status, reservationKey, createdAt, updatedAt)
+     VALUES ?`,
+    [timeSlots]
+  );
+
+  return { success: result.affectedRows > 0, message: "Reservations created successfully." };
 };
 
 // Update reservation status
@@ -57,6 +103,33 @@ export const updateReservationStatus = async (key, status) => {
   `,[status, key])
 
   return { success : result.affectedRows > 0, message: "Reservation status update succesfully."} // affectedRows mean the row that have affected like this query has update 1 rows
+};
+
+export const deleteReservation = async (key) => {
+  // Check if reservation exists
+  const [existing] = await db.promise().query(
+    `SELECT status FROM Reservation WHERE reservationKey = ?`,
+    [key]
+  );
+
+  if (existing.length === 0) {
+    return { success: false, message: "Invalid reservation key" };
+  }
+
+  const currentState = existing[0].status;
+
+  // Only allow deletion if the reservation is cancelled or expired
+  if (currentState !== "cancelled" && currentState !== "expired") {
+    return { success: false, message: "Only cancelled or expired reservations can be deleted." };
+  }
+
+  // Perform the delete operation
+  const [result] = await db.promise().query(
+    `DELETE FROM Reservation WHERE reservationKey = ?`,
+    [key]
+  );
+
+  return { success: result.affectedRows > 0, message: "Reservation deleted successfully." };
 };
 
 export const editReservation = async (key, title, description) => {
