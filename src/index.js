@@ -7,6 +7,7 @@ import roomRoute from "./routes/roomRoute.js";
 import reservationRoute from "./routes/reservationRoute.js"
 import { autoExpirePendingReservations } from "./models/reservationModel.js";
 import reportRoute from "./routes/reportRoute.js";
+import cron from "node-cron";
 
 const app = express();
 const PORT = process.env.PORT;
@@ -34,18 +35,36 @@ connection.connect((err) => {
   }
 });
 
-// Run every 10 minutes to expire old reservations
-setInterval(async () => {
+// Run when server starts
+(async () => {
   try {
-    const expiredCount = await autoExpirePendingReservations();
-    if (expiredCount > 0) {
-      console.log(`Expired ${expiredCount} pending reservations.`);
+    await autoExpirePendingReservations();
+    console.log("Checked for expired reservations on server start.");
+    if (autoExpirePendingReservations.length > 0){
+      console.log("update status to expired success")
+    } else {
+      console.log("nothing update");
     }
   } catch (error) {
-    console.error("Error expiring reservations:", error);
+    console.error("Error expiring reservations on startup:", error);
   }
-}, 600000); // Runs every 10 minutes (600,000ms)
+})();
 
+// Run every 10 minutes on real-world time  if use setInterval the time will reset after restart
+cron.schedule("*/10 * * * *", async () => {
+  try {
+    await autoExpirePendingReservations();
+    console.log("Checked for expired reservations on cron schedule.");
+    if (autoExpirePendingReservations.length > 0){
+      console.log("update status to expired success")
+    } else {
+      console.log("nothing update");
+    }
+    
+  } catch (error) {
+    console.error("Error expiring reservations on cron schedule:", error);
+  }
+});
 
 app.listen(PORT, () => {
   console.log("Server is running on localhost:3002");

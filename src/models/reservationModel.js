@@ -164,11 +164,22 @@ export const editReservation = async (key, title, description) => {
   }
 
 
+// export const autoExpirePendingReservations = async () => {
+//   const [result] = await db.promise().query(`
+//     UPDATE Reservation 
+//     SET status = 'expired'
+//     WHERE status = 'pending' AND TIMESTAMPDIFF(MINUTE, createdAt, NOW()) >= 30
+//   `);
+//   return result.affectedRows;
+// }; 
+
+// Force UTC time_STamp
 export const autoExpirePendingReservations = async () => {
   const [result] = await db.promise().query(`
     UPDATE Reservation 
     SET status = 'expired'
-    WHERE status = 'pending' AND TIMESTAMPDIFF(MINUTE, createdAt, NOW()) >= 30
+    WHERE status = 'pending' 
+    AND TIMESTAMPDIFF(MINUTE, createdAt, NOW()) >= 30;
   `);
   return result.affectedRows;
 };
