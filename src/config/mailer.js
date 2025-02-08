@@ -19,6 +19,13 @@ const sendEmail = async (to, subject, htmlContent, retries = 3) => {
             to,
             subject,
             html: htmlContent,
+            attachments: [
+              {
+                filename: 'logo.webp',
+                path: 'https://res.cloudinary.com/dy8gz1xet/image/upload/v1739026034/Group_36_bi9nij.webp',
+                cid: 'logoimage' // Attach image inline
+              }
+            ]
           };
     
           await transporter.sendMail(mailOptions);
