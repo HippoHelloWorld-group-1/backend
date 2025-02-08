@@ -12,7 +12,7 @@ export const invalidKey = (text) => ( `
                 font-family: Arial, Helvetica, sans-serif;
             }
             body{
-                background-image: url(/Group-36.webp);
+                background-image: url(/SIT-1.webp);
                 background-repeat: none;
                 background-position: center;
                 background-attachment: fixed;
@@ -61,7 +61,7 @@ export const invalidKey = (text) => ( `
         <div class="cover">
             <div class="box">
                 <div class="top-box">
-                    <img alt="logo-sit" src="/SIT-1.webp">
+                    <img alt="logo-sit" src="/Group-36.webp">
                 </div>
                 <div class="text">
                     <h1>Reservation</h1>
