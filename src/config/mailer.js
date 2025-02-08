@@ -18,14 +18,14 @@ const sendEmail = async (to, subject, htmlContent, retries = 3) => {
             from: `"Room Booking" <${process.env.EMAIL_USER}>`,
             to,
             subject,
-            html: htmlContent
-            // attachments: [
-            //   {
-            //     filename: 'Group_36_bi9nij.png',
-            //     path: '/Group_36_bi9nij.png',
-            //     cid: 'logoimage' // Attach image inline
-            //   }
-            // ]
+            html: htmlContent,
+            attachments: [
+              {
+                filename: 'logo.png', // Use PNG instead of WEBP
+                path: path.resolve('public/Group_36_bi9nij.png'), // Ensure the path is correct
+                cid: 'logoimage' // Matches the <img src="cid:logoimage">
+              }
+            ]
           };
     
           await transporter.sendMail(mailOptions);
