@@ -12,7 +12,7 @@ export const invalidKey = (text) => ( `
                 font-family: Arial, Helvetica, sans-serif;
             }
             body{
-                background-image: url(https://cdn.discordapp.com/attachments/1327890645922091059/1337424714213101598/SIT_1.webp?ex=67a76554&is=67a613d4&hm=823d275d5d40a81439766a983d9f1b18b85ecff14429a75be0cd170d4dfc6125&;);
+                background-image: url(/Group-36.webp);
                 background-repeat: none;
                 background-position: center;
                 background-attachment: fixed;
@@ -61,7 +61,7 @@ export const invalidKey = (text) => ( `
         <div class="cover">
             <div class="box">
                 <div class="top-box">
-                    <img alt="logo-sit" src="https://cdn.discordapp.com/attachments/1327890645922091059/1337424714599108723/Group_36.webp?ex=67a76554&is=67a613d4&hm=61d40abca3722757f3c2c345e89bc2c8e0f917c7929fa672cd61d92c290a1633&">
+                    <img alt="logo-sit" src="/SIT-1.webp">
                 </div>
                 <div class="text">
                     <h1>Reservation</h1>
