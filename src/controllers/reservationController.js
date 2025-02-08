@@ -56,7 +56,7 @@ export const createReservation = async (req, res) => {
 
     //  Send email with new format
     const emailContent = `
-      <img alt="logo-sit" src="/Group-36.webp">
+      <img alt="logo-sit" src="http://helloworld01.sit.kmutt.ac.th:3002/Group-36.webp">
       <h1>Room Booking Confirmation SIT</h1> 
       <h2>${roomName}</h2>
       <p>Selected Times:</p>
